@@ -1,0 +1,63 @@
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="elasticsearch.jquery.js"></script>
+<script type="text/javascript">
+window.jQuery || document.write(unescape('%3Cscript src="http://api.jquery.com/jquery-wp-content/themes/jquery/js/jquery-1.9.1.min.js"%3E%3C/script%3E'))
+var client = new $.es.Client({
+	hosts: 'talkboard-talkboard.rhcloud.com'
+});
+
+function list(){
+	client.search({
+	  index: 'twitter',
+	  type: 'tweet'
+	  //,
+	  //body: {
+	  //  query: {
+	  //    match: {
+	  //      body: 'elasticsearch'
+	  //    }
+	  //  }
+	  //}
+	}).then(function (resp) {
+	    document.write("hits"+resp.hits.hits)
+	}, function (err) {
+	    document.write(err.message)
+	});
+}
+
+function searchByName(){
+	var name = prompt("searchByName");
+	client.search({
+	  index: 'talkboard',
+	  type: 'board',
+	  body: {
+	    query: {
+	      match: {
+	        name: name
+	      }
+	    }
+	  }
+	}).then(function (resp) {
+	    document.write("response : " + resp)
+	}, function (err) {
+	    document.write("error : " + err.message)
+	});
+}
+function getById(){
+	var id = prompt("getById");
+}
+function write(){
+	var id = prompt("write");
+}
+
+</script>
+</head>
+<body>
+<button onclick="list()">list</button>
+<button onclick="searchByName()">search by name</button>
+<button onclick="getById()">get by id</button>
+<button onclick="write()">write</button>
+</body>
+</html>
